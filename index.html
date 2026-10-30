@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luvuyo Mxenge Dictionary - 57 Cards</title>
+<style>
+  body{margin:0;font-family:Georgia,serif;background:#fdf6e3;color:#3a2a1a}
+  header{padding:24px 16px;text-align:center;background:#fff8e7;border-bottom:3px double #8b6a43;position:sticky;top:0;z-index:10}
+  h1{margin:0;font-size:1.8rem;letter-spacing:1px}
+  .sub{margin:6px 0 0;opacity:.7;font-style:italic;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:16px;max-width:1400px;margin:auto}
+  .card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 12px rgba(90,60,20,.15);border:1px solid #e8d9b8;cursor:pointer;position:relative}
+  .card img{width:100%;display:block}
+  .card::after{content:"LUVUYO MXENGE DICTIONARY";position:absolute;bottom:44px;right:8px;background:rgba(0,0,0,.65);color:#fff;font-size:8px;letter-spacing:1.5px;padding:3px 6px;border-radius:3px}
+  .meta{padding:10px 12px;background:#fffaf0;border-top:1px solid #f0e0c0;font-weight:bold;font-size:13px}
+  #q{width:90%;max-width:400px;padding:10px 14px;border-radius:999px;border:1px solid #d7c39a;font-size:16px;margin-top:12px}
+  #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999;align-items:center;justify-content:center}
+  #modal.open{display:flex}
+  #modal img{max-width:95vw;max-height:90vh;border-radius:10px}
+</style>
+</head>
+<body>
+<header>
+  <h1>VINTAGE DICTIONARY - A SERIES</h1>
+  <p class="sub">Luvuyo Mxenge Dictionary - 57 cards - English to isiXhosa</p>
+  <input id="q" type="text" placeholder="Search AAA, Aachen..." oninput="doFilter()">
+</header>
+<div class="grid" id="grid"></div>
+<div id="modal" onclick="this.classList.remove('open')"><img id="modalImg" src=""></div>
+
+<script>
+const files = [
+["A - ONE - NYE / INYE","image_20261030_213647.webp"],
+["A. CONAN DOYLE","image_20261030_203803.webp"],
+["AAA","image_20261030_204602.webp"],
+["AAH - AWU! / HAWU!","image_20261030_210432.webp"],
+["AACHEN","image_20261030_204622.webp"],
+["AAR - UMLAMBO WE-AAR","image_20261030_210537.webp"],
+["AARON / AORON - U-ARONI","image_20261030_210517.webp"],
+["AARP","image_20261030_204641.webp"],
+["AAS","image_20261030_204703.webp"],
+["AAS - ISITUMBU / INYAMA EFILEYO","image_20261030_210642.webp"],
+["AAVE","image_20261030_204723.webp"],
+["AAVE - ISINGESI SESINTSUNDU SASEMELIKA","image_20261030_210457.webp"],
+["AB","image_20261030_204742.webp"],
+["AB INITIO","image_20261030_204758.webp"],
+["ABA","image_20261030_204817.webp"],
+["ABA TRANSIT","image_20261030_204839.webp"],
+["ABACK","image_20261030_204900.webp"],
+["A-TEAM - IQELA LEENGCALI","image_20261030_214334.webp"],
+["A BIT - KANCINCI","image_20261030_204329.webp"],
+["A BOMB - IBHOMBU","image_20261030_214202.webp"],
+["A COUPLE OF - ISIBINI","image_20261030_204344.webp"],
+["A FEW - IMBALWA","image_20261030_204404.webp"],
+["A GOOD DEAL - ISIVUMELWANO ESILUNGILEYO","image_20261030_203246.webp"],
+["A GREAT DEAL - OKUNINZI KAKHULU","image_20261030_203248.webp"],
+["A HORIZON - UMBONO WETHEMBA","image_20261030_210058.webp"],
+["A HORIZON - UMBONO WETHEMBA v2","image_20261030_203251.webp"],
+["A HUNDRED TIMES - KAKHULU","image_20261030_210118.webp"],
+["A KEMPIS - UKULINGISA UKRISTU / UTHOBEKO","image_20261030_210141.webp"],
+["A LA CARTE - UKUKHETHA UKUTYA KWIMENU","image_20261030_214508.webp"],
+["A LA MODE - NE-AYISIKHRIMU","image_20261030_214600.webp"],
+["A LEVEL - INQANABA ELIPHUCUKILEYO","image_20261030_210238.webp"],
+["A LEVEL - INQANABA ELIPHUCUKILEYO v2","image_20261030_203401.webp"],
+["A LIST - ULUHLU","image_20261030_214252.webp"],
+["A LITTLE - KANCINCI","image_20261030_210217.webp"],
+["A LITTLE - KANCINCI v2","image_20261030_203423.webp"],
+["A MAN - INDODA","image_20261030_214052.webp"],
+["A MILLION - ISIGIDI","image_20261030_203446.webp"],
+["A POSTERIOR","image_20261030_203504.webp"],
+["A TRIFLE - INTO ENCINCI KAKHULU","image_20261030_213936.webp"],
+["A TRIFLE - INTO ENCINCI KAKHULU v2","image_20261030_203523.webp"],
+["A.D. - EMVA KOKUZALWA KUKA KRISTU","image_20261030_204441.webp"],
+["A.E. - IMBHALI","image_20261030_204503.webp"],
+["A.K.A. - OKWAZIWA NJENGO","image_20261030_204521.webp"],
+["A.M. - EKUSENI","image_20261030_214630.webp"],
+["A.M.A. - UGQIRHA","image_20261030_214926.webp"],
+["AAL - IZINWELE ZOMNGQUSHO","image_20261030_215011.webp"],
+["AALBORG - IDOLOBHA","image_20261030_214711.webp"],
+["AALTO - UMYILI","image_20261030_214730.webp"],
+["AORE - ISIQITHI SASE-AORE","image_20261030_210559.webp"],
+["AL - I-ALUMINIUM / I-ALUMINIYAMU","image_20261030_225929.webp"],
+["AL BOT - IROBOTHI / I-ARHENTE YEDIJITHALI","image_20261030_225955.webp"],
+["ALAND ISLANDS - IZIQITHI ZE-ALAND","image_20261030_230037.webp"],
+["AALST - IDOLOPHU YASE-BELGIUM","image_20261030_230056.webp"],
+["AAR - UMLAMBO WE-AAR (No.7)","image_20261030_230115.webp"],
+["A FORTIORI - NGOKUNGATHANDABUZEKIYO","image_20261030_230132.webp"],
+["AA - INTSINGISELO ZIMBINI / IBHETRI","image_20261030_230154.webp"],
+["A POSTERIORI - NGOKWAMAVA / EMVA KOVAVANYO","image_20261030_230214.webp"]
+];
+const grid=document.getElementById('grid');
+const modal=document.getElementById('modal');
+const modalImg=document.getElementById('modalImg');
+function render(list){
+  grid.innerHTML='';
+  list.forEach(function(f){
+    var d=document.createElement('div');
+    d.className='card';
+    d.innerHTML='<img src="'+f[1]+'" loading="lazy"><div class="meta">'+f[0]+'</div>';
+    d.onclick=function(){modalImg.src=f[1];modal.classList.add('open');};
+    grid.appendChild(d);
+  });
+}
+function doFilter(){
+  var q=document.getElementById('q').value.toLowerCase();
+  render(files.filter(function(f){return f[0].toLowerCase().indexOf(q)>-1;}));
+}
+render(files);
+</script>
+</body>
+</html>
